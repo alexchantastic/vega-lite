@@ -4,7 +4,7 @@ import {assert} from 'chai';
 import {Encoding} from '../src/encoding';
 import {Field, FieldDef} from '../src/fielddef';
 import {MarkDef} from '../src/mark';
-import {fieldDefs, GenericSpec, GenericUnitSpec, normalize, Spec, TopLevelExtendedSpec} from '../src/spec';
+import {fieldDefs, GenericSpec, GenericUnitSpec, normalize, Spec, TopLevel, TopLevelExtendedSpec} from '../src/spec';
 import {defaultConfig, initConfig} from './../src/config';
 
 // describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
@@ -313,7 +313,7 @@ describe('normalize()', function () {
         "config": {"overlay": {"line": true}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevelExtendedSpec>(normalizedSpec, {
+      assert.deepEqual<TopLevel<Spec>>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -347,7 +347,7 @@ describe('normalize()', function () {
         "config": {"overlay": {"line": true}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevelExtendedSpec>(normalizedSpec, {
+      assert.deepEqual<TopLevel<Spec>>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "facet": {
           "row": {"field": "symbol", "type": "nominal"},
@@ -385,7 +385,7 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'linepoint'}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevelExtendedSpec>(normalizedSpec, {
+      assert.deepEqual<TopLevel<Spec>>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -425,7 +425,7 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'line'}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevelExtendedSpec>(normalizedSpec, {
+      assert.deepEqual<TopLevel<Spec>>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -459,7 +459,7 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'line'}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevelExtendedSpec>(normalizedSpec, {
+      assert.deepEqual<TopLevel<Spec>>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -495,7 +495,7 @@ describe('normalize()', function () {
         "config": {"overlay": {"area": 'line'}}
       };
       const normalizedSpec = normalize(spec, spec.config);
-      assert.deepEqual<TopLevelExtendedSpec>(normalizedSpec, {
+      assert.deepEqual<TopLevel<Spec>>(normalizedSpec, {
         "data": {"url": "data/stocks.csv","format": {"type": "csv"}},
         "layer": [
           {
@@ -545,7 +545,7 @@ describe('normalizeRangedUnitSpec', () => {
   });
 
   it('should do nothing if there is no missing x or y', function() {
-    const spec: TopLevelExtendedSpec = {
+    const spec: Spec = {
       "data": {"url": "data/population.json"},
       "mark": "rule",
       "encoding": {
@@ -555,7 +555,7 @@ describe('normalizeRangedUnitSpec', () => {
       }
     };
 
-    assert.deepEqual<TopLevelExtendedSpec>(normalize(spec, defaultConfig), spec);
+    assert.deepEqual(normalize(spec, defaultConfig), spec);
   });
 
   it('should convert x2 -> x if there is no x in the encoding', function() {
